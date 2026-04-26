@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>量化交易 · 实时监控</title>
+    <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { background:#0b1120; color:#e2e8f0; font-family: 'Segoe UI', sans-serif; padding:20px; }
+        .grid { display:grid; grid-template-columns: 1fr 1fr; gap:20px; }
+        @media (max-width:1000px) { .grid { grid-template-columns:1fr; } }
+        .card { background:#111827; border-radius:12px; padding:15px; box-shadow:0 4px 12px rgba(0,0,0,0.5); }
+        .card h3 { color:#38bdf8; margin-bottom:10px; border-bottom:1px solid #1e293b; padding-bottom:5px; }
+        .metrics { display:flex; flex-wrap:wrap; gap:15px; margin:10px 0; }
+        .metric { background:#1e293b; border-radius:8px; padding:10px 15px; min-width:110px; }
+        .metric .label { font-size:12px; color:#94a3b8; }
+        .metric .value { font-size:22px; font-weight:bold; }
+        .positive { color:#4ade80; } .negative { color:#f87171; }
+        .stock-select button { background:#3b82f6; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; }
+        .stock-select select { background:#1e293b; color:white; border:1px solid #475569; padding:6px; border-radius:6px; }
+        .log-box { height:200px; overflow-y:auto; font-size:12px; background:#0b1120; padding:8px; border-radius:6px; }
+        .log-line { border-bottom:1px solid #1e293b; padding:3px 0; }
+        .warn { color:#fbbf24; } .err { color:#f87171; }
+    </style>
+</head>
+<body>
+<h2 style="margin-bottom:20px;">📊 量化交易系统 · 实时监控面板</h2>
+
+<div class="grid">
+    <div class="card">
+        <h3>🏦 账户概览</h3>
+        <div class="metrics" id="statusMetrics">
+            <div class="metric"><div class="label">总资产</div><div class="value" id="totalAsset">--</div></div>
+            <div class="metric"><div class="label">现金</div><div class="value" id="cash">--</div></div>
+            <div class="metric"><div class="label">回撤</div><div class="value negative" id="drawdown">--</div></div>
+            <div class="metric"><div class="label">连续亏损</div><div class="value" id="lossStreak">--</div></div>
+        </div>
+        <h3>📈 当前持仓</h3>
+        <div id="positionsTable" style="font-size:14px;">无持仓</div>
+    </div>
+
+    <div class="card">
+        <h3>🧠 模型融合权重</h3>
+        <div id="weightChart" style="height:200px;"></div>
+    </div>
+</div>
+
+<div class="grid" style="margin-top:20px;">
+    <div class="card">
+        <div class="stock-select">
+            <label>股票：</label>
+            <select id="stockSelect">
+                <option value="600519">600519 茅台</option>
+                <option value="000001">000001 平安银行</option>
+                <option value="300750">300750 宁德时代</option>
+            </select>
+            <button onclick="refreshChart()">刷新</button>
+        </div>
+        <div id="chart" style="height:400px;"></div>
+    </div>
+    <div class="card">
+        <h3>💰 净值曲线</h3>
+        <div id="equityChart" style="height:400px;"></div>
+    </div>
+</div>
+
+<div class="grid" style="margin-top:20px;">
+    <div class="card">
+        <h3>📋 最近交易</h3>
+        <div id="tradeHistory" style="max-height:200px; overflow-y:auto; font-size:13px;">暂无交易</div>
+    </div>
+    <div class="card">
+        <h3>📜 实时日志</h3>
+        <div class="log-box" id="logs">加载中...</div>
+    </div>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

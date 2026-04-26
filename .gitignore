@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+models/
+venv/
+.env
+*.pkl
+*.pt
+!logs/engine_state.json
+!logs/performance.json
+!logs/trading.log
+!logs/performance_snapshots.json

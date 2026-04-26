@@ -1,0 +1,10 @@
+flask
+requests
+akshare
+pandas
+numpy
+scikit-learn
+torch
+joblib
+backtrader
+gunicorn
